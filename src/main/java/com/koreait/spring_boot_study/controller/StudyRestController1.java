@@ -85,7 +85,8 @@ public class StudyRestController1 {
         return myData;
     }
 
-    @GetMapping("/test6?{id}")
+    // localhost:8080/study/test6/{2}
+    @GetMapping("/test6/{id}")
     public Map<String, Object> getStudent(@PathVariable("id") int id) {
         List<Student> studentList = List.of(
                 new Student(1, "피카츄"),
@@ -93,6 +94,30 @@ public class StudyRestController1 {
                 new Student(3, "파이리"),
                 new Student(4, "꼬부기")
         );
+        // 있는 번호인지 검증
+        // 없으면 없다고 return을 해 줘야함
+        Student target = null;
+        for (Student student : studentList) {
+            if (student.getId() == id) {
+                target = student;
+            }
+        }
+        if (target == null) {
+            return Map.of("error", "해당 id의 학생은 존재하지 않습니다.");
+        }
+
+        return Map.of("success", target);
+    }
+
+    // localhost:8080/study/test7?id=1&name=피카츄
+    @GetMapping("/test7")
+    public String test7(@MatrixVariable Student student) {
+        // 쿼리스트링으로 데이터를 받을 때, 객체로 받으면 안되나?
+        // 참고) Jackson 라이브러리가 요청을 가로채서 바꾼뒤에 매개변수에 할당해준다
+        // 1. 쿼리스트링의 key들과 클래스의 필드명이 동일해야한다.
+        // 2. 해당 클래스에 생성자 또는 settor가 정의되어 있어야 한다.
+        log.info("들어온 데이터: {}", student);
+        return "성공";
     }
 
 

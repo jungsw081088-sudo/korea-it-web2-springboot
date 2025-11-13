@@ -1,14 +1,13 @@
 package com.koreait.spring_boot_study.controller;
 
+import com.koreait.spring_boot_study.entity.Post;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @Slf4j
@@ -35,20 +34,6 @@ public class StudyRestController2 {
         // 서로 연산하면 자동으로 double로 변환
     return (num1 + num2 + num3 + num4) / 4.0;
     }
-
-    /*
-    포스트맨 응답으로
-    [
-        {
-            "name": "홍길동",
-            "address": "부산시 연제구"
-        },
-        {
-            "name": "고길동",
-            "address": "부산시 부산진구"
-        }
-    ]
-    */
 
     @GetMapping("/profiles")
     public List<Map<String, Object>> profiles(String name1, String add1, String name2, String add2) {
@@ -79,6 +64,58 @@ public class StudyRestController2 {
                 )
         );
     }
+
+    /*
+        포스트맨 응답으로
+        [
+            {
+                "name": "홍길동",
+                "address": "부산시 연제구"
+            },
+            {
+                "name": "고길동",
+                "address": "부산시 부산진구"
+            }
+        ]
+        */
+
+    // 게시물 조회 컨트롤러 만들기
+    // id로 조회할 수 있게끔 구현
+    @GetMapping("/getPost/{id}")
+    public Map<String, Object> getPost(@PathVariable("id") int id) {
+        List<Post> postList = List.of(
+                new Post(1, "도란 그는 신인가", "ㅇㅈ?"),
+                new Post(2, "오너 그는 신인가", "ㅇㅈ?"),
+                new Post(3, "페이커 그는 신인가", "ㅇㅈ?"),
+                new Post(4, "구마유시 그는 신인가", "ㅇㅈ?"),
+                new Post(5, "케리아 그는 신인가", "ㅇㅈ?")
+        );
+
+        // Optional -> null일수도 있는 값을 포함한 컨테이너 클래스
+        Optional<Post> optionalPost = postList.stream()
+                .filter(post -> post.getId() == id)
+                .findFirst(); // 처음 찾은 것만 가져와 / 타입 = 옵셔널
+
+        if (optionalPost.isEmpty()) { // 옵셔널이 가지고 있는 값이 null이라면
+            return Map.of("error", "해당 id의 게시글은 존재하지 않습니다.");
+        }
+
+        Post target = optionalPost.get(); // 옵셔널에 포장된 실제값 꺼내기
+        return Map.of("성공", target);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }

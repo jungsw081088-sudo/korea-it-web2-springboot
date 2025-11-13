@@ -37,7 +37,7 @@ add를 여러번 해서 한 화물차에 많은 짐을 싣게된다. -git add .
 
 Ctrl + Alt + L -> 정렬
 
- : 토큰
+파일에서 찾아 : 토큰
 
 https://github.com/elikese / 강사님 깃허브
 https://github.com/jungsw081088-sudo/korit_web1_java / 내 깃허브
