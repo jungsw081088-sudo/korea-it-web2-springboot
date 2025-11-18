@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 
 @AllArgsConstructor
-@Getter
+@Getter @ToString
 public class Post {
     private int id;
     private String title;

@@ -47,17 +47,17 @@ public class StudyRestController1 {
         return "수신성공";
     }
 
-    // 객체 리턴이 가능하다
+    // 객체 리턴이 가능하다.
     @GetMapping("/test4")
     public List<String> test4() {
         log.info("test4 컨트롤러 수신");
-        List<String> names = List.of("홍길동", "고길동", "김길동");
+        List<String> names = List.of("홍길동", "김길동", "고길동");
         return names;
     }
 
     // 객체 리턴이 가능하다2
-    // JSON - 서버와 클라이언트(브라우저, 포스트맵)사이에 주고받는
-    // 웹 데이터 표준형식 중 하나(XML.. 등)
+    // JSON - 서버와 클라이언트(브라우저, 포스트맨)사이에 주고받는 
+    // 웹 데이터 표준형식 중 하나(XML..등)
     // 자바의 Map과 유사하게 생겼음.
     // 자바의 객체도 전송이 가능하다 -> (자바객체 -> JSON -> JavaScript 객체)
     @GetMapping("/test5")
@@ -75,7 +75,6 @@ public class StudyRestController1 {
                 "name", "홍길동",
                 "age", 20
         );
-
         Map<String, Object> data2 = Map.of(
                 "name", "김길동",
                 "age", 22
@@ -85,7 +84,7 @@ public class StudyRestController1 {
         return myData;
     }
 
-    // localhost:8080/study/test6/{2}
+    // localhost:8080/study/test6/{id}
     @GetMapping("/test6/{id}")
     public Map<String, Object> getStudent(@PathVariable("id") int id) {
         List<Student> studentList = List.of(
@@ -95,15 +94,16 @@ public class StudyRestController1 {
                 new Student(4, "꼬부기")
         );
         // 있는 번호인지 검증
-        // 없으면 없다고 return을 해 줘야함
+        // 없으면 없다고 return을 해줘야함.
         Student target = null;
-        for (Student student : studentList) {
-            if (student.getId() == id) {
+        for(Student student : studentList) {
+            if(student.getId() == id) {
                 target = student;
             }
         }
-        if (target == null) {
-            return Map.of("error", "해당 id의 학생은 존재하지 않습니다.");
+
+        if(target == null) {
+            return Map.of("error", "해당 id의 학생은 존재하지 않습니다");
         }
 
         return Map.of("success", target);
@@ -111,15 +111,14 @@ public class StudyRestController1 {
 
     // localhost:8080/study/test7?id=1&name=피카츄
     @GetMapping("/test7")
-    public String test7(@MatrixVariable Student student) {
-        // 쿼리스트링으로 데이터를 받을 때, 객체로 받으면 안되나?
-        // 참고) Jackson 라이브러리가 요청을 가로채서 바꾼뒤에 매개변수에 할당해준다
+    public String test7(@ModelAttribute Student student) {
+        // 쿼리스트링으로 데이터를 받을때, 객체로 받으면 안될까? -> ModelAttribute
+        // 참고) Jackson 라이브러리가 요청을 가로채서 바꾼뒤에 매개변수에 할당해준다.
         // 1. 쿼리스트링의 key들과 클래스의 필드명이 동일해야한다.
-        // 2. 해당 클래스에 생성자 또는 settor가 정의되어 있어야 한다.
+        // 2. 해당 클래스에 생성자 or setter가 정의되어 있어야 한다.
         log.info("들어온 데이터: {}", student);
         return "성공";
     }
-
 
 
 }
